@@ -61,5 +61,5 @@ class StoredUploadedFile(FieldFile):
     def delete(self, *args, **kwargs):
         raise NotImplementedError('Static files are read-only')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
