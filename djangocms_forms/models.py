@@ -124,7 +124,7 @@ class FormDefinition(CMSPlugin):
 
 
 class FormField(models.Model):
-    form = models.ForeignKey(FormDefinition, related_name='fields')
+    form = models.ForeignKey(FormDefinition, related_name='fields',on_delete=models.CASCADE)
     field_type = models.CharField(
         _('Field Type'), max_length=100,
         choices=settings.DJANGOCMS_FORMS_FIELD_TYPES,
