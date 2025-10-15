@@ -13,7 +13,7 @@ from django.template.defaultfilters import slugify
 from django.template.loader import get_template, render_to_string
 from django.utils.translation import gettext_lazy as _
 
-from ipware.ip import get_ip
+from ipware import get_client_ip
 from unidecode import unidecode
 
 from .fields import FormBuilderFileField, HoneyPotField, MultipleChoiceAutoCompleteField, ReCaptchaField
@@ -331,9 +331,10 @@ class FormBuilder(forms.Form):
 
     def save_to_db(self, form_data, request, referrer):
         user = request.user if request.user.is_authenticated() else None
+        ip, _ = get_client_ip(request)
         FormSubmission.objects.create(
             plugin=self.form_definition.plugin_reference,
-            ip=get_ip(request),
+            ip=ip,
             referrer=referrer,
             form_data=form_data,
             created_by=user)
