@@ -98,7 +98,7 @@ class FormSubmissionAdmin(admin.ModelAdmin):
         Add the export view to urls.
         """
         urls = super(FormSubmissionAdmin, self).get_urls()
-        from django.conf.urls import url
+        from django.urls import re_path
 
         def wrap(view):
             def wrapper(*args, **kwargs):
@@ -108,7 +108,7 @@ class FormSubmissionAdmin(admin.ModelAdmin):
         info = self.model._meta.app_label, self.model._meta.model_name
 
         extra_urls = [
-            url(r'^export/$', wrap(self.export_view), name='%s_%s_export' % info),
+            re_path(r'^export/$', wrap(self.export_view), name='%s_%s_export' % info),
         ]
         return extra_urls + urls
 
@@ -213,7 +213,7 @@ class FormSubmissionAdmin(admin.ModelAdmin):
                     if label in headers:
                         row[headers.index(label)] = humanize(field)
 
-                    row[-4] = force_text(submission.created_by or _('Unknown')) 
+                    row[-4] = force_text(submission.created_by or _('Unknown'))
                     row[-3] = submission.creation_date.strftime(
                         settings.DJANGOCMS_FORMS_DATETIME_FORMAT)
                     row[-2] = submission.ip
