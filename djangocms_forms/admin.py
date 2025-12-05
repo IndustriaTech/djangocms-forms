@@ -163,7 +163,7 @@ class FormSubmissionAdmin(admin.ModelAdmin):
                 message = _('No matching %s found for the given criteria. '
                             'Please try again.') % self.opts.verbose_name_plural
                 self.message_user(request, message, level=messages.WARNING)
-                if request.is_ajax():
+                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                     data = {
                         'reloadBrowser': True,
                         'submissionCount': 0,
@@ -182,7 +182,7 @@ class FormSubmissionAdmin(admin.ModelAdmin):
                         if label not in headers:
                             headers.append(label)
 
-                if request.is_ajax():
+                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                     data = {
                         'reloadBrowser': False,
                         'submissionCount': queryset.count(),
