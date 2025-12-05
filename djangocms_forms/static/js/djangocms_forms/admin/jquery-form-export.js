@@ -53,4 +53,4 @@
             formSelectorInput.change(fetchAvailableHeaders);
         }
     });
-})(django.jQuery);
+})(django.jQuery || jQuery);
