@@ -17,7 +17,7 @@ from .conf import settings
 
 class FileStorage(LazyObject):
     def _setup(self):
-        self._wrapped = storages[settings.DJANGOCMS_FORMS_FILE_STORAGE]
+        self._wrapped = storages[settings.DJANGOCMS_FORMS_FILE_STORAGE]()
 
 file_storage = FileStorage()
 
