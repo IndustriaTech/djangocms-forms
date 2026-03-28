@@ -117,6 +117,23 @@ class FormDefinition(CMSPlugin):
         return self.spam_protection == 2
 
     def copy_relations(self, oldinstance):
+        old_source = oldinstance.placeholder.source
+        new_source = self.placeholder.source
+        # On publish/new version, source is the same PageContent (or its version).
+        # On page copy, source is a completely different PageContent.
+        is_page_copy = old_source.page != new_source.page
+        if not is_page_copy:
+            # Publish — just point to the same Form, don't create a new one
+            self.plugin_reference = oldinstance.plugin_reference
+            self.name = oldinstance.name
+            self.save()
+            return
+        # Actual page copy — create a new Form
+        import time
+        new_form_name = f"{oldinstance.name}_{int(time.time())}"
+        self.plugin_reference = Form.objects.create(name=new_form_name)
+        self.name = new_form_name
+        self.save()
         for field in oldinstance.fields.all():
             field.pk = None
             field.form = self
