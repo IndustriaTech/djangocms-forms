@@ -127,13 +127,13 @@ class FormDefinition(CMSPlugin):
             self.plugin_reference = oldinstance.plugin_reference
             self.name = oldinstance.name
             self.save()
-            return
-        # Actual page copy — create a new Form
-        import time
-        new_form_name = f"{oldinstance.name}_{int(time.time())}"
-        self.plugin_reference = Form.objects.create(name=new_form_name)
-        self.name = new_form_name
-        self.save()
+        else:
+            # Actual page copy — create a new Form
+            import time
+            new_form_name = f"{oldinstance.name}_{int(time.time())}"
+            self.plugin_reference = Form.objects.create(name=new_form_name)
+            self.name = new_form_name
+            self.save()
         for field in oldinstance.fields.all():
             field.pk = None
             field.form = self
